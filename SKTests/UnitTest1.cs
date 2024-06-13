@@ -13,7 +13,7 @@ namespace SemanticKernelDemo
         public void Setup()
         {
 
-            LocalModelHandler handler = new LocalModelHandler("http://localhost:11434");
+            LocalModelHandler handler = new LocalModelHandler(@"http://localhost:1234");
             HttpClient client = new HttpClient(handler);
 
 
