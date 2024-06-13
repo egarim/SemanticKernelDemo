@@ -35,21 +35,34 @@ It can give explicit information or say 'I don't know' if it doesn't have an ans
 User:{{$userInput}}
 ChatBot:";
 
-// 5. Create a Symentic Function - An AI function
+        // 5. Create a Symentic Function - An AI function
         var chatFunction = kernel.CreateFunctionFromPrompt(prompt, 
             executionSettings: new OpenAIPromptExecutionSettings { MaxTokens = 2000, Temperature = 0.7, TopP = 0.5 });
-
-// 6. Build the Arguments
+        
+        // 6. Build the Arguments
         var arguments = new KernelArguments();
 
-// 7. Get user Inputs
+        // 7. Get user Inputs
         Console.WriteLine("Hi, I am a chatBot, ask me anything!");
-        var readUserInput = Console.ReadLine();
-        arguments["userInput"] = readUserInput;
 
-// 8. Start with a basic chat
-        var bot_answer = await chatFunction.InvokeAsync(kernel, arguments);
-        Console.Write(bot_answer);
+        while (true)
+        {
+                // 7. Start with a basic chat
+                var readUserInput = Console.ReadLine();
+
+                Func<string, Task> Chat = async (string input) =>
+                {
+                        // Save the message in the arguments
+                        arguments["userInput"] = input;
+
+                        // Process the user message and get an answer
+                        var answer = await chatFunction.InvokeAsync(kernel, arguments);
+
+                        Console.WriteLine(answer);
+                };
+
+                await Chat(readUserInput);
+        }
 
     }
 
